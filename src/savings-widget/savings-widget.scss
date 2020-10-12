@@ -1,0 +1,216 @@
+@import "../common/scss/variables";
+
+.already-started-link {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.widget {
+  min-width: 700px;
+  border-radius: 10px;
+  position: relative;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #F2F2F2;
+    padding: 16px 100px;
+    color: #3A414E;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: 0px 4px 15px rgba($color-grey, 0.2);
+
+    .title {
+      font-weight: 900;
+      font-size: 24px;
+      line-height: 125%;
+    }
+
+    .subtitle {
+      font-size: 14px;
+    }
+  }
+
+  .section-form {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: $color-white;
+    box-shadow: 0px 4px 15px rgba($color-grey, 0.2);
+  }
+
+  &__interest-monthly-row {
+    align-items: center !important;
+    max-width: calc(100% - 250px);
+
+    .or-label {
+      font-weight: 900;
+      font-size: 16px;
+      line-height: 150%;
+      color: $color-primary;
+      padding-top: 10px;
+    }
+
+    .custom-input {
+      max-width: 100%;
+    }
+  }
+
+  .slider-form {
+    max-width: calc(100% - 250px);
+    margin-bottom: 2rem;
+
+    &__info {
+      display: flex;
+      justify-content: space-between;
+
+      .name {
+        font-size: 16px;
+        line-height: 150%;
+        font-weight: 900;
+      }
+
+      .value {
+        font-size: 16px;
+        line-height: 150%;
+        font-weight: 900;
+        color: $color-primary;
+      }
+    }
+
+    &__labels {
+      display: flex;
+      justify-content: space-between;
+
+      font-size: 14px;
+      color: #9A9A9A;
+    }
+  }
+
+  .custom-estimate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    padding: 2rem;
+    max-width: 300px;
+    box-shadow: 0px 4px 15px rgba(176, 176, 176, 0.2);
+    position: absolute;
+    right: -5%;
+    bottom: 0;
+
+    .enter-info-label {
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 24px;
+    }
+
+    .savings {
+      color: $color-primary;
+
+      .amount {
+        display: flex;
+        align-items: center;
+
+        .dollar-sign {
+          font-size: 2rem;
+          font-weight: 700;
+        }
+        .value {
+          font-size: 5rem;
+          font-weight: 900;
+        }
+      }
+
+      .each-month-label {
+        font-weight: bold;
+        font-size: 28px;
+        line-height: 150%;
+      }
+    }
+
+    .new-mo-payment {
+      margin-top: 2rem;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 170%;
+      color: #9A9A9A;
+    }
+
+    .how-calculated {
+      margin-bottom: 2rem;
+      font-style: italic;
+      font-size: 14px;
+      line-height: 170%;
+      cursor: pointer;
+      //text-align: right;
+      text-decoration-line: underline;
+      color: #9A9A9A;
+    }
+
+    .loader {
+      font-size: 30px;
+      margin: 6rem 0;
+    }
+  }
+}
+
+.modal-calculating-info {
+
+    &__header {
+      display: flex;
+      justify-content: center;
+      font-size: 44px;
+      margin-bottom: 32px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 30px;
+
+      &:first-of-type {
+        margin-bottom: 32px;
+      }
+    }
+  }
+
+@media (max-width: 787px) {
+
+  .widget {
+    position: unset;
+    min-width: unset;
+    width: 100%;
+
+    &__header {
+      padding: 16px 50px;
+      text-align: center;
+    }
+
+    .section-form {
+      padding: 32px 0 0 0;
+
+      .custom-estimate {
+        position: static;
+        box-shadow: 5px -2px 15px rgba(176, 176, 176, 0.2);
+        width: 100%;
+        max-width: unset;
+      }
+
+      &>*:not(.custom-estimate) {
+        padding: 0 32px;
+      }
+    }
+
+    &__interest-monthly-row, .slider-form {
+      max-width: unset;
+    }
+
+    .link {
+      text-align: center;
+    }
+  }
+}

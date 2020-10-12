@@ -1,0 +1,12 @@
+@import "./src/common/scss/variables.scss";
+
+.tooltip {
+  .mobile-desc {
+    display: none;
+    color: $color-secondary;
+    font-size: 14px;
+    @media (max-width: 787px) {
+      display: inline;
+    }
+  }
+}

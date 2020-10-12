@@ -1,0 +1,22 @@
+@import "../scss/variables";
+
+.registration-layout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  &[data-color="blue"] {
+    background-color: $color-primary;
+  }
+
+  &[data-color="white"] {
+    background-color: $color-white;
+  }
+
+  &__wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}

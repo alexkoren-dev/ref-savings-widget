@@ -1,0 +1,18 @@
+@import "./src/common/scss/variables.scss";
+
+.tooltip {
+  color: $color-dark-grey;
+  font-size: 16px;
+  display: inline-block;
+  .react-tooltip-lite {
+    border-radius: $border-radius;
+    border: 2px solid rgba($color-grey, 0.5);
+    max-width: 300px !important;
+    background-color: $color-white;
+  }
+
+  .react-tooltip-lite-arrow {
+    border-top-color: rgba($color-grey, 0.5) !important;
+    z-index: 999 !important;
+  }
+}

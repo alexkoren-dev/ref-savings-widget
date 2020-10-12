@@ -1,0 +1,66 @@
+@import "./src/common/scss/variables.scss";
+
+.custom-input {
+
+  &__input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  &__input {
+    outline: 0;
+    border-radius: $border-radius;
+    background-color: $color-white;
+    border: 2px solid rgba($color-grey, .3);
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    padding: .5rem 1rem;
+    height: $height-form-item;
+    width: 100%;
+    &:focus {
+      border: 2px solid rgba($color-primary, 1);
+      box-shadow: 0 0 0 .2rem rgba($color-primary, .2);
+    }
+    &:not(:first-child) {
+      padding: .5rem .1rem .5rem 2rem;
+    }
+    &.invalid {
+      border: 2px solid $color-red;
+      &:focus {
+        border: 2px solid $color-red;
+        box-shadow: 0 0 0 .2rem rgba($color-red, .2);
+      }
+    }
+    &[disabled] {
+      background-color: rgba($color-grey, 0.2);
+      cursor: not-allowed;
+    }
+    &[type="password"] {
+      letter-spacing: 2px;
+      color: rgba($color-black, 0.7);
+      &::placeholder {
+        letter-spacing: normal;
+      }
+    }
+  }
+
+  &__prefix {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translate(0, -50%);
+  }
+
+  &__error {
+    display: flex;
+    align-items: baseline;
+    color: $color-red;
+    margin-top: 0.3rem;
+
+    &>svg {
+      flex-shrink: 0;
+      margin-right: .3rem;
+    }
+  }
+
+}
