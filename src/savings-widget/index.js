@@ -13,6 +13,7 @@ import {calculateMonthlySavings} from './calculation';
 
 import './savings-widget.scss';
 import './react-range.scss';
+import {TOOLTIPS} from "../common/helpers/constants";
 
 const DefaultFormValues = {
   state: { label: 'TX', value: 'TX' },
@@ -138,7 +139,7 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
             <CellForm
               id="origination_date"
               label="Origination Date"
-              info="TBD"
+              info={TOOLTIPS.ORIGINATION_DATE}
             >
               <MaskedInput
                 id="origination_date"
@@ -155,7 +156,7 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
             <CellForm
               id="mortgage_amount"
               label="Original Mortgage Amount"
-              info="TBD"
+              info={TOOLTIPS.ORIGINAL_MORTGAGE_AMOUNT}
             >
               <InputNumber
                 prefix="$"
@@ -173,7 +174,7 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
             <CellForm
               id="interest_rate"
               label="Interest rate"
-              info="TBD"
+              info={TOOLTIPS.INTEREST_RATE}
               noRightMargin
             >
               <InputNumber
@@ -192,7 +193,7 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
             <CellForm
               id="monthly_payment"
               label="Current Payment/mo."
-              info="TBD"
+              info={TOOLTIPS.CURRENT_MONTHLY_PAYMENT}
             >
               <InputNumber
                 prefix="$"
