@@ -18,6 +18,6 @@ const overrideProcessEnv = (value) => (config) => {
 
 module.exports = override(
   overrideProcessEnv({
-    APP_BASE_URL: JSON.stringify(process.env.APP_BASE_URL || 'APP_BASE_URL'),
+    APP_BASE_URL: JSON.stringify(process.env.APP_BASE_URL || '__APP_BASE_URL'),
   }),
 );
