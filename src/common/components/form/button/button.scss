@@ -1,0 +1,108 @@
+@import "./src/common/scss/variables.scss";
+
+.custom-button {
+  display: inline-block;
+  height: $height-form-item;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 1rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  color: $color-black;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.5rem 3rem;
+  border-radius: $border-radius;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &[data-type="primary"] {
+    color: $color-white;
+    background-color: $color-primary;
+    border: 1px solid $color-primary;
+    &:focus {
+      background-color: darken($color-primary, 10);
+      border-color: darken($color-primary, 10);
+      box-shadow: 0 0 0 0.2rem rgba(darken($color-primary, 10), 0.5);
+    }
+    &:hover {
+      background-color: darken($color-primary, 10);
+    }
+  }
+
+  &[data-type="green"] {
+    color: $color-white;
+    background-color: $color-secondary;
+    border: 1px solid $color-secondary;
+    &:focus {
+      background-color: darken($color-secondary, 10);
+      border-color: darken($color-secondary, 10);
+      box-shadow: 0 0 0 0.2rem rgba(darken($color-secondary, 10), 0.5);
+    }
+    &:hover {
+      background-color: darken($color-secondary, 10);
+    }
+  }
+
+  &[data-type="red"] {
+    color: $color-white;
+    background-color: $color-red;
+    border: 1px solid $color-red;
+    &:focus {
+      background-color: darken($color-red, 10);
+      border-color: darken($color-red, 10);
+      box-shadow: 0 0 0 0.2rem rgba(darken($color-red, 10), 0.5);
+    }
+    &:hover {
+      background-color: darken($color-red, 10);
+    }
+  }
+
+  &[data-type="yellow"] {
+    color: $color-white;
+    background-color: $color-yellow;
+    border: 1px solid $color-yellow;
+    &:focus {
+      background-color: darken($color-yellow, 10);
+      border-color: darken($color-yellow, 10);
+      box-shadow: 0 0 0 0.2rem rgba(darken($color-yellow, 10), 0.5);
+    }
+    &:hover {
+      background-color: darken($color-yellow, 10);
+    }
+  }
+
+  &[data-type="outlined"] {
+    color: $color-primary;
+    background-color: $color-white;
+    border: 1px solid $color-primary;
+    &:focus {
+      background-color: darken($color-white, 10);
+      border-color: darken($color-white, 10);
+      box-shadow: 0 0 0 0.2rem rgba(darken($color-white, 10), 0.5);
+    }
+    &:hover {
+      background-color: darken($color-white, 10);
+    }
+  }
+
+  &[disabled] {
+    background-color: $color-gr;
+    border: 1px solid $color-gr;
+    cursor: not-allowed;
+    &:focus {
+      background-color: $color-gr;
+      border-color: $color-gr;
+      box-shadow: none;
+    }
+    &:hover {
+      background-color: $color-gr;
+    }
+  }
+
+}
