@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Layout } from '../common/layout';
+import { Header } from "../header";
 import { SavingsWidget } from '../savings-widget';
 
 import SavingsWidgetSVG from '../assets/svg/savings-widget.svg';
@@ -22,17 +22,21 @@ export const App = () => {
   };
 
   return (
-    <Layout color="white">
-      <div className="get-started-page">
-        <div className="left">
-          <img className="xl-screen" src={SavingsWidgetSVG} alt="svg icon" />
+    <div className="layout">
+      <Header />
 
-          <img className="l-screen" src={SavingsWidgetPicSVG} alt="svg icon" />
-          <img className="l-screen" src={SavingsWidgetTextSVG} alt="svg icon" />
+      <section className="layout__wrapper">
+        <div className="get-started-page">
+          <div className="left">
+            <img className="xl-screen" src={SavingsWidgetSVG} alt="svg icon" />
+
+            <img className="l-screen" src={SavingsWidgetPicSVG} alt="svg icon" />
+            <img className="l-screen" src={SavingsWidgetTextSVG} alt="svg icon" />
+          </div>
+
+          <SavingsWidget onSubmit={onSubmit} />
         </div>
-
-        <SavingsWidget onSubmit={onSubmit} />
-      </div>
-    </Layout>
+      </section>
+    </div>
   );
 };
