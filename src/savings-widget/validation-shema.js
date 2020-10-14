@@ -3,6 +3,16 @@ import {object, number, ref, string} from 'yup';
 const required = validation => validation.required('This field is required');
 const originationDateRegExp = /^(0[1-9]|1[0-2])\/?([0-9]{4})$/;
 
+export const ALL_FIELDS = [
+    { fieldName: 'state' },
+    { fieldName: 'origination_date' },
+    { fieldName: 'mortgage_amount' },
+    { fieldName: 'interest_rate' },
+    { fieldName: 'monthly_payment' },
+    { fieldName: 'cashout_amount' },
+    { fieldName: 'mortgage_term' },
+];
+
 export const validationSchema = object().shape({
   state: required(object()),
   origination_date: required(string().test(

@@ -1,0 +1,117 @@
+.layout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 50px;
+  z-index: 100;
+  position: relative;
+  background-color: #3D1FC3;
+
+  .refinance-logo {
+    font-size: 235px;
+    display: flex;
+    cursor: pointer;
+    &:focus {
+      outline: 2px solid #FFB51D;
+    }
+  }
+
+  &__item {
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
+    .link {
+      min-width: 100px;
+      padding: 20px 10px;
+      display: block;
+      text-align: center;
+      position: relative;
+      &:after {
+        content: '';
+        display: none;
+        width: 100%;
+        height: 2px;
+        left: 0;
+        bottom: 10px;
+        position: absolute;
+        background-color: #FFB51D;
+      }
+      &:hover {
+        &:after {
+          display: block;
+        }
+      }
+      &:focus {
+        outline: 2px solid #FFB51D;
+      }
+    }
+  }
+
+  .hamburger {
+    display: none;
+  }
+
+  // TABLET
+  @media (max-width: 1023px) {
+    padding: 20px 30px;
+    &__item {
+      &:not(:last-child) {
+        margin-right: 0;
+      }
+    }
+
+    .refinance-logo {
+      font-size: 200px;
+    }
+  }
+
+  // MOBILE
+  @media (max-width: 787px) {
+    padding: 15px 20px;
+    &__list {
+      position: absolute;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: calc((100vmin - 75px) * 2);
+      height: calc((100vmin - 75px) * 2);
+      border-radius: 50%;
+      top: -200%;
+      left: -200%;
+      z-index: -1;
+      transform: translate(-100%, -100%);
+      // background-color: #3D1FC3;
+      background-color: #3A414E;
+      box-shadow: 4px 4px 10px 5px rgba(#3A414E, 0.25);
+      transition: all 1s ease;
+      padding: 10px;
+
+      &.open {
+        top: 60px;
+        left: 0;
+        transform: translate(-50%, -50%);
+        transition: all 0.4s ease;
+      }
+      .link {
+        color: #FFFFFF;
+      }
+    }
+
+    &__item {
+      margin-left: 42%;
+      &:first-child {
+        margin-top: 38%;
+      }
+    }
+    
+    .hamburger {
+      display: block;
+    }
+
+    .refinance-logo {
+      font-size: 156px;
+      max-height: 35px;
+    }
+  }
+}

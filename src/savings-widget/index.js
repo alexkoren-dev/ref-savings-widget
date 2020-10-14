@@ -2,18 +2,25 @@ import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import Slider from 'react-rangeslider';
 
-import {CellForm, Modal} from '../common/components';
-import {Button, InputNumber, MaskedInput, SelectSTATE,} from '../common/components/form';
-import {Loader} from '../common/components/loader';
-import {formatMoney} from '../common/helpers/formatMoney';
+import {CellForm, Modal, InputNumber, MaskedInput, SelectSTATE, Loader} from '../components';
 
-import {validationSchema} from './validation-shema';
-import {ALL_FIELDS} from './constants';
+import {validationSchema, ALL_FIELDS} from './validation-shema';
 import {calculateMonthlySavings} from './calculation';
+import {TOOLTIPS} from "../helpers/constants";
 
 import './savings-widget.scss';
-import './react-range.scss';
-import {TOOLTIPS} from "../common/helpers/constants";
+
+const formatMoney = (value) => {
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+  const formatted = formatter.format(value);
+  return formatted.replace('$', ''); // remove '$' sign at the end
+};
+
 
 const DefaultFormValues = {
   state: { label: 'TX', value: 'TX' },
@@ -297,7 +304,13 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
                   <span className="how-calculated" onClick={() => setIsModalShown(true)}>How is this calculated?</span>
                 </>
               )}
-            <Button disabled={isCalculating} type="submit" color="green">Claim My Savings</Button>
+            <button
+              type="submit"
+              disabled={isCalculating}
+              className={`custom-button`}
+            >
+              Claim My Savings
+            </button>
           </div>
         </div>
       </form>
