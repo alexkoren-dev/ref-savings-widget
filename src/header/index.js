@@ -6,7 +6,7 @@ import './header.scss';
 const ListMenu = [
   { value: 'About', url: `${process.env.APP_BASE_URL}about` },
   { value: 'FAQs', url: `${process.env.APP_BASE_URL}faq` },
-  { value: 'Sign up', url: `${process.env.APP_BASE_URL}sign-up` },
+  { value: 'Sign Up', url: `${process.env.APP_BASE_URL}sign-up` },
   { value: 'Log In', url: `${process.env.APP_BASE_URL}login` },
 ];
 
