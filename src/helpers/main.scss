@@ -81,8 +81,16 @@ ul {
     }
   }
 
+
   @media (max-width: 787px) {
     &__row {
+      align-items: flex-end;
+    }
+  }
+
+  @media (max-width: 480px) {
+    &__row {
+      align-items: stretch;
       flex-direction: column;
 
       &:not(:last-child) {
