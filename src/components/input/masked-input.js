@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icons } from '../../icons';
 import { IMaskInput } from 'react-imask';
+import { Icons } from '../../icons';
 import './input.scss';
 
 export const MaskedInput = ({

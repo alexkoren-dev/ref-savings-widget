@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {useForm} from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import Slider from 'react-rangeslider';
 
-import {CellForm, Modal, InputNumber, MaskedInput, SelectSTATE, Loader} from '../components';
+import { CellForm, Modal, InputNumber, MaskedInput, SelectSTATE, Loader } from '../components';
 
-import {validationSchema, ALL_FIELDS} from './validation-shema';
-import {calculateMonthlySavings} from './calculation';
-import {TOOLTIPS} from "../helpers/constants";
+import { validationSchema, ALL_FIELDS } from './validation-shema';
+import { calculateMonthlySavings } from './calculation';
+import { redirect } from '../helpers/redirect';
+import { TOOLTIPS } from '../helpers/constants';
 
 import './savings-widget.scss';
 
@@ -21,7 +22,6 @@ const formatMoney = (value) => {
   return formatted.replace('$', ''); // remove '$' sign at the end
 };
 
-
 const DefaultFormValues = {
   state: { label: 'TX', value: 'TX' },
   origination_date: '01/2018',
@@ -33,17 +33,20 @@ const DefaultFormValues = {
 };
 
 export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
-  const [isCalculating, setIsCalculating] = useState(false);
+  const [isCalculating, setIsCalculating] = useState(true);
   const [isModalShown, setIsModalShown] = useState(false);
-  // Todo: mock data yet
-  const [savingsInfo, setSavingsInfo] = useState({
-    monthlySavings: 762,
-    monthlyPayment: 1137,
-    rate: 3.05,
-  });
+  const [savingsInfo, setSavingsInfo] = useState(null);
 
   // FORM
-  const { setValue, register, errors, watch, handleSubmit, triggerValidation, getValues } = useForm({
+  const {
+    setValue,
+    register,
+    errors,
+    watch,
+    handleSubmit,
+    triggerValidation,
+    getValues,
+  } = useForm({
     mode: 'onBlur',
     validationSchema,
     defaultValues: DefaultFormValues,
@@ -51,6 +54,18 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
 
   useEffect(() => {
     ALL_FIELDS.forEach(field => register({ name: field.fieldName }));
+
+    const newSavingsInfo = calculateMonthlySavings({
+      state: DefaultFormValues.state,
+      originationDate: DefaultFormValues.origination_date,
+      mortgageAmount: DefaultFormValues.mortgage_amount,
+      interestRate: DefaultFormValues.interest_rate,
+      monthlyPayment: DefaultFormValues.monthly_payment,
+      cashoutAmount: DefaultFormValues.cashout_amount,
+      mortgageTerm: DefaultFormValues.mortgage_term,
+    });
+    setSavingsInfo(newSavingsInfo);
+    setIsCalculating(false);
   }, []);
 
   const recalculateSavings = () => {
@@ -79,7 +94,7 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
   };
 
   const goToLoginPage = () => {
-    window.location.href = process.env.APP_BASE_URL + 'login';
+    redirect(`${process.env.APP_BASE_URL}login`);
   };
 
   const onSubmitForm = (data) => {
@@ -307,7 +322,7 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
             <button
               type="submit"
               disabled={isCalculating}
-              className={`custom-button`}
+              className="custom-button"
             >
               Claim My Savings
             </button>

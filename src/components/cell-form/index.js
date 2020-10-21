@@ -1,8 +1,8 @@
 import React from 'react';
-import TooltipLite from "react-tooltip-lite";
+import TooltipLite from 'react-tooltip-lite';
 
+import { Icons } from '../../icons';
 import './cell-form.scss';
-import {Icons} from "../../icons";
 
 export const CellForm = ({
   id,
@@ -19,20 +19,19 @@ export const CellForm = ({
   return (
     <section className={`cell-form ${classNames}`}>
       <div className="cell-form__label-wrapper">
-        <label className={`cell-form__label`} htmlFor={id}>{label}</label>
+        <label className="cell-form__label" htmlFor={id}>{label}</label>
         {info && (
           <TooltipLite
-            arrow={true}
+            arrow
             content={info}
             padding="1rem"
             className="tooltip"
-            useHover={true}
+            useHover
             arrowSize={10}
             direction="up"
             eventToggle={null}
           >
             <Icons name="info" fill="#65DA98" />
-            {/*{text && <span className="mobile-desc">{text}</span>}*/}
           </TooltipLite>
         )}
       </div>
