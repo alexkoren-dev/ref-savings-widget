@@ -1,15 +1,14 @@
 import React from 'react';
-import ReactSelect from "react-select";
+import ReactSelect from 'react-select';
 
 import { US_STATES } from '../../helpers/constants';
-import { Icons } from "../../icons";
+import { Icons } from '../../icons';
 import './index.scss';
 
 export const SelectSTATE = ({
   name,
   id,
   value = null,
-  options = {},
   preffix,
   onChange,
   disabled,

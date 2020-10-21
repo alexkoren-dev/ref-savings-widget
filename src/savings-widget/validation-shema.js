@@ -1,24 +1,24 @@
-import {object, number, ref, string} from 'yup';
+import { object, number, ref, string } from 'yup';
 
 const required = validation => validation.required('This field is required');
 const originationDateRegExp = /^(0[1-9]|1[0-2])\/?([0-9]{4})$/;
 
 export const ALL_FIELDS = [
-    { fieldName: 'state' },
-    { fieldName: 'origination_date' },
-    { fieldName: 'mortgage_amount' },
-    { fieldName: 'interest_rate' },
-    { fieldName: 'monthly_payment' },
-    { fieldName: 'cashout_amount' },
-    { fieldName: 'mortgage_term' },
+  { fieldName: 'state' },
+  { fieldName: 'origination_date' },
+  { fieldName: 'mortgage_amount' },
+  { fieldName: 'interest_rate' },
+  { fieldName: 'monthly_payment' },
+  { fieldName: 'cashout_amount' },
+  { fieldName: 'mortgage_term' },
 ];
 
 export const validationSchema = object().shape({
   state: required(object()),
   origination_date: required(string().test(
-      'origination_date',
-      'This field is required',
-      (value) => (originationDateRegExp).test(value),
+    'origination_date',
+    'This field is required',
+    (value) => (originationDateRegExp).test(value),
   )),
   mortgage_amount: number()
     .integer('Mortgage amount must be an integer')
@@ -31,7 +31,7 @@ export const validationSchema = object().shape({
     .test(
       'interest_rate',
       'Either interest rate or monthly payment must be provided',
-      function (value) {
+      (value) => {
         const monthlyPayment = this.resolve(ref('monthly_payment'));
         return value || monthlyPayment;
       },
@@ -43,7 +43,7 @@ export const validationSchema = object().shape({
     .test(
       'monthly_payment',
       'Either interest rate or monthly payment must be provided',
-      function (value) {
+      (value) => {
         const interestRate = this.resolve(ref('interest_rate'));
         return value || interestRate;
       },
