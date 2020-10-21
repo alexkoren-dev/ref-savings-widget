@@ -23,34 +23,12 @@ export const validationSchema = object().shape({
   mortgage_amount: number()
     .integer('Mortgage amount must be an integer')
     .min(1, 'Your current mortgage must have a balance greater than $0.')
-    .typeError('Your current mortgage must have a balance greater than $0.'),
-  interest_rate: number()
-    .transform(value => value || 0)
-    .notRequired()
-    .nullable(true)
-    .test(
-      'interest_rate',
-      'Either interest rate or monthly payment must be provided',
-      (value) => {
-        const monthlyPayment = this.resolve(ref('monthly_payment'));
-        return value || monthlyPayment;
-      },
-    ),
+    .max(999999, 'Your current mortgage must have a balance lower than $1,000,000.')
+    .typeError('Please enter a valid number'),
   monthly_payment: number()
-    .transform(value => value || 0)
-    .notRequired()
-    .nullable(true)
-    .test(
-      'monthly_payment',
-      'Either interest rate or monthly payment must be provided',
-      (value) => {
-        const interestRate = this.resolve(ref('interest_rate'));
-        return value || interestRate;
-      },
-    ),
+    .integer('Monthly payment must be an integer')
+    .min(1, 'Monthly payment must be greater than $0.')
+    .max(50000, 'Monthly payment must be lower than 50,000$.')
+    .typeError('Please enter a valid number'),
   cashout_amount: number(),
-  mortgage_term: number()
-    .integer('Mortgage term must be an integer')
-    .min(5)
-    .max(30),
 });
