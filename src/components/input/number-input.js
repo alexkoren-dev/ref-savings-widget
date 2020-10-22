@@ -5,6 +5,7 @@ import './input.scss';
 export const InputNumber = ({
   id,
   name,
+  step = 'any',
   placeholder,
   disabled,
   className = '',
@@ -23,7 +24,7 @@ export const InputNumber = ({
     >
       {prefix && <div className="custom-input__prefix">{prefix}</div>}
       <input
-        step="any"
+        step={step}
         min={0}
         type="number"
 

@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Slider from 'react-rangeslider';
-
 import { CellForm, Modal, InputNumber, MaskedInput, SelectSTATE, Loader } from '../components';
-
 import { validationSchema, ALL_FIELDS } from './validation-shema';
 import { calculateMonthlySavings } from './calculation';
-import { redirect } from '../helpers/redirect';
 import { TOOLTIPS } from '../helpers/constants';
-
 import './savings-widget.scss';
 
 const formatMoney = (value) => {
@@ -25,17 +21,18 @@ const formatMoney = (value) => {
 const DefaultFormValues = {
   state: { label: 'TX', value: 'TX' },
   origination_date: '01/2018',
-  mortgage_amount: 250000,
-  interest_rate: 3.0,
-  monthly_payment: 1900,
+  mortgage_amount: 430000,
+  interest_rate: 4.5,
   cashout_amount: 0,
+  monthly_payment: 2200,
   mortgage_term: 30,
 };
 
-export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
+export const SavingsWidget = ({ onSubmit }) => {
   const [isCalculating, setIsCalculating] = useState(true);
   const [isModalShown, setIsModalShown] = useState(false);
   const [savingsInfo, setSavingsInfo] = useState(null);
+  const [isFormValid, setIsFormValid] = useState(true);
 
   // FORM
   const {
@@ -46,6 +43,7 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
     handleSubmit,
     triggerValidation,
     getValues,
+    formState,
   } = useForm({
     mode: 'onBlur',
     validationSchema,
@@ -82,19 +80,12 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
     setSavingsInfo(newSavingsInfo);
   };
 
-  const triggerValidationAndRecalculate = (name) => {
-    triggerValidation(name);
-    recalculateSavings();
-  };
-
-  const triggerValidationForInterestAndPayment = () => {
-    triggerValidation('interest_rate');
-    triggerValidation('monthly_payment');
-    recalculateSavings();
-  };
-
-  const goToLoginPage = () => {
-    redirect(`${process.env.APP_BASE_URL}login`);
+  const triggerValidationAndRecalculate = async (name) => {
+    const isValid = await triggerValidation(name);
+    setIsFormValid(isValid);
+    if (isValid) {
+      recalculateSavings();
+    }
   };
 
   const onSubmitForm = (data) => {
@@ -111,14 +102,12 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
     >
       <div className="modal-calculating-info">
         <span className="modal-calculating-info__header">Calculating Your Savings</span>
-
         <p>
           Your actual monthly mortgage rate depends on a variety of factors, including your credit
           score, existing debt obligations and value of the property. We assume a '700' FICO score
           when obtaining rate estimates for 15 year, 20 year and 30 year mortgage products.
           Your credit score may differ.
         </p>
-
         <p>
           We assume your current monthly payment includes property taxes and insurance held in an
           escrow account by your lender. Our new monthly payment also includes estimated property
@@ -131,6 +120,57 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
     </Modal>
   );
 
+  const renderSavingsEstimate = () => {
+    if (isCalculating) {
+      return (
+        <>
+          <span className="enter-info-label">Calculating your savings</span>
+          <Loader />
+          <span className="new-mo-payment">New Mo. Payment: $--- (---%)</span>
+        </>
+      );
+    }
+
+    if (!isFormValid) {
+      return (
+        <>
+          <span className="enter-info-label">Calculating your savings</span>
+          <span className="each-month-label">Check your inputs!</span>
+          <span className="new-mo-payment">New Mo. Payment: $--- (---%)</span>
+        </>
+      );
+    }
+
+    return (
+      <>
+        <span className="enter-info-label">
+          With a refinance, we could help you save:
+        </span>
+        <div className="savings">
+          <div className="amount">
+            <span className="dollar-sign">$</span>
+            <span className="value">{formatMoney(savingsInfo.monthlySavings)}</span>
+          </div>
+          <span className="each-month-label">each month!</span>
+        </div>
+        <span className="new-mo-payment">
+          New Mo. Payment: $
+          {formatMoney(savingsInfo.monthlyPayment)}
+          {' '}
+          <br />
+          {/* Old Rate:{' '}{savingsInfo.oldRate}<br/> */}
+          New APR:
+          {' '}
+          {savingsInfo.rate}
+          %
+          <br />
+          {/* New Mortgage Balance:{' '}{formatMoney(savingsInfo.newMortgageBalance)} */}
+        </span>
+        <span className="how-calculated" onClick={() => setIsModalShown(true)}>How is this calculated?</span>
+      </>
+    );
+  };
+
   return (
     <div className="widget">
       {isModalShown && renderModal()}
@@ -141,7 +181,7 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
 
       <form className="form-page" onSubmit={handleSubmit(onSubmitForm)}>
         <div className="section-form">
-          <div className="form-page__row">
+          <div className="form-page__row widget__interest-monthly-row">
             <CellForm
               id="state"
               label="State"
@@ -175,9 +215,28 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
                 triggerValidation={triggerValidationAndRecalculate}
               />
             </CellForm>
+          </div>
+
+          <div className="form-page__row widget__interest-monthly-row">
+            {/* <CellForm
+              id="interest_rate"
+              label="Interest rate"
+              info={TOOLTIPS.INTEREST_RATE}
+              noRightMargin
+            >
+              <InputNumber
+                prefix=""
+                name="interest_rate"
+                placeholder="X.X%"
+                error={errors.interest_rate && errors.interest_rate.message}
+                reference={register}
+                triggerValidation={() => triggerValidationForInterestAndPayment()}
+                hideError
+              />
+            </CellForm> */}
             <CellForm
               id="mortgage_amount"
-              label="Original Mortgage Amount"
+              label="Original Mortgage"
               info={TOOLTIPS.ORIGINAL_MORTGAGE_AMOUNT}
             >
               <InputNumber
@@ -190,27 +249,6 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
                 hideError
               />
             </CellForm>
-          </div>
-
-          <div className="form-page__row widget__interest-monthly-row">
-            <CellForm
-              id="interest_rate"
-              label="Interest rate"
-              info={TOOLTIPS.INTEREST_RATE}
-              noRightMargin
-            >
-              <InputNumber
-                prefix=""
-                name="interest_rate"
-                placeholder="3.0%"
-                error={errors.interest_rate && errors.interest_rate.message}
-                reference={register}
-                triggerValidation={() => triggerValidationForInterestAndPayment()}
-                hideError
-              />
-            </CellForm>
-
-            <span className="or-label">OR</span>
 
             <CellForm
               id="monthly_payment"
@@ -220,10 +258,10 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
               <InputNumber
                 prefix="$"
                 name="monthly_payment"
-                placeholder="1,900"
+                placeholder="Monthly"
                 error={errors.monthly_payment && errors.monthly_payment.message}
                 reference={register}
-                triggerValidation={() => triggerValidationForInterestAndPayment()}
+                triggerValidation={triggerValidationAndRecalculate}
                 hideError
               />
             </CellForm>
@@ -249,14 +287,13 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
               onChange={v => setValue('cashout_amount', v, true)}
               onChangeComplete={() => triggerValidationAndRecalculate('cashout_amount')}
             />
-
             <div className="slider-form__labels">
-              <span>0$</span>
-              <span>300,000$</span>
+              <span>$0</span>
+              <span>$300,000</span>
             </div>
           </div>
-
-          <div className="slider-form">
+          {/* <span>remove -- keep it @ 30 years</span> */}
+          {/* <div className="slider-form">
             <div className="slider-form__info">
               <span className="name">MORTGAGE TERM</span>
               <span className="value">
@@ -265,7 +302,6 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
                 Years
               </span>
             </div>
-
             <Slider
               min={5}
               max={30}
@@ -277,51 +313,16 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
               onChange={v => setValue('mortgage_term', v, true)}
               onChangeComplete={() => triggerValidationAndRecalculate('mortgage_term')}
             />
-
             <div className="slider-form__labels">
               <span>5 Years</span>
               <span>30 Years</span>
             </div>
-          </div>
-
+          </div> */}
           <div className="custom-estimate">
-            { isCalculating
-              ? (
-                <>
-                  <span className="enter-info-label">Calculating your savings</span>
-                  <Loader />
-                  <span className="new-mo-payment">New Mo. Payment: $--- (---%)</span>
-                </>
-              )
-              : (
-                <>
-                  <span className="enter-info-label">
-                    Enter your info to see
-                    your custom estimate:
-                  </span>
-
-                  <div className="savings">
-                    <div className="amount">
-                      <span className="dollar-sign">$</span>
-                      <span className="value">{formatMoney(savingsInfo.monthlySavings)}</span>
-                    </div>
-                    <span className="each-month-label">each month!</span>
-                  </div>
-
-                  <span className="new-mo-payment">
-                    New Mo. Payment: $
-                    {formatMoney(savingsInfo.monthlyPayment)}
-                    {' '}
-                    (
-                    {savingsInfo.rate}
-                    %)
-                  </span>
-                  <span className="how-calculated" onClick={() => setIsModalShown(true)}>How is this calculated?</span>
-                </>
-              )}
+            { renderSavingsEstimate() }
             <button
               type="submit"
-              disabled={isCalculating}
+              disabled={isCalculating || !isFormValid}
               className="custom-button"
             >
               Claim My Savings
@@ -329,11 +330,6 @@ export const SavingsWidget = ({ onSubmit, showLoginButton = true }) => {
           </div>
         </div>
       </form>
-      {showLoginButton && (
-        <div onClick={goToLoginPage} className="link link--blue already-started-link">
-          Already started? Log In
-        </div>
-      )}
     </div>
   );
 };
