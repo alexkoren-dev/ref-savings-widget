@@ -22,5 +22,20 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <script>
+      let height;
+      const sendPostMessage = () => {
+        if (height !== document.getElementById('root').offsetHeight) {
+          height = document.getElementById('root').offsetHeight;
+          window.parent.postMessage({
+            frameHeight: height
+          }, '*');
+          //console.log(height);
+        }
+      }
+      window.onload = () => sendPostMessage();
+      window.onresize = () => sendPostMessage();
+    </script>
   </body>
 </html>
