@@ -6,7 +6,6 @@ import { validationSchema, ALL_FIELDS } from './validation-shema';
 import { calculateMonthlySavings } from './calculation';
 import { TOOLTIPS } from '../helpers/constants';
 import './savings-widget.scss';
-
 const formatMoney = (value) => {
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -17,23 +16,20 @@ const formatMoney = (value) => {
   const formatted = formatter.format(value);
   return formatted.replace('$', ''); // remove '$' sign at the end
 };
-
 const DefaultFormValues = {
   state: { label: 'TX', value: 'TX' },
   origination_date: '01/2018',
   mortgage_amount: 430000,
   interest_rate: 4.5,
   cashout_amount: 0,
-  monthly_payment: 2200,
+  monthly_payment: 2800,
   mortgage_term: 30,
 };
-
 export const SavingsWidget = ({ onSubmit }) => {
   const [isCalculating, setIsCalculating] = useState(true);
   const [isModalShown, setIsModalShown] = useState(false);
   const [savingsInfo, setSavingsInfo] = useState(null);
   const [isFormValid, setIsFormValid] = useState(true);
-
   // FORM
   const {
     setValue,
@@ -49,49 +45,38 @@ export const SavingsWidget = ({ onSubmit }) => {
     validationSchema,
     defaultValues: DefaultFormValues,
   });
-
-  useEffect(() => {
-    ALL_FIELDS.forEach(field => register({ name: field.fieldName }));
-
-    const newSavingsInfo = calculateMonthlySavings({
-      state: DefaultFormValues.state,
-      originationDate: DefaultFormValues.origination_date,
-      mortgageAmount: DefaultFormValues.mortgage_amount,
-      interestRate: DefaultFormValues.interest_rate,
-      monthlyPayment: DefaultFormValues.monthly_payment,
-      cashoutAmount: DefaultFormValues.cashout_amount,
-      mortgageTerm: DefaultFormValues.mortgage_term,
+  const recalculateSavings = async (values) => {
+    setIsCalculating(true);
+    const newSavingsInfo = await calculateMonthlySavings({
+      state: values.state,
+      originationDate: values.origination_date,
+      mortgageAmount: values.mortgage_amount,
+      interestRate: values.interest_rate,
+      monthlyPayment: values.monthly_payment,
+      cashoutAmount: values.cashout_amount,
+      mortgageTerm: values.mortgage_term,
     });
     setSavingsInfo(newSavingsInfo);
     setIsCalculating(false);
-  }, []);
-
-  const recalculateSavings = () => {
-    const currentValues = getValues();
-    const newSavingsInfo = calculateMonthlySavings({
-      state: currentValues.state,
-      originationDate: currentValues.origination_date,
-      mortgageAmount: currentValues.mortgage_amount,
-      interestRate: currentValues.interest_rate,
-      monthlyPayment: currentValues.monthly_payment,
-      cashoutAmount: currentValues.cashout_amount,
-      mortgageTerm: currentValues.mortgage_term,
-    });
-    setSavingsInfo(newSavingsInfo);
   };
-
+  useEffect(() => {
+    ALL_FIELDS.forEach(field => register({ name: field.fieldName }));
+    recalculateSavings(DefaultFormValues);
+  }, []);
+  const onFormValuesChange = () => {
+    const currentValues = getValues();
+    recalculateSavings(currentValues);
+  };
   const triggerValidationAndRecalculate = async (name) => {
     const isValid = await triggerValidation(name);
     setIsFormValid(isValid);
     if (isValid) {
-      recalculateSavings();
+      onFormValuesChange();
     }
   };
-
   const onSubmitForm = (data) => {
     onSubmit(data, savingsInfo);
   };
-
   const renderModal = () => (
     <Modal
       closeIcon
@@ -119,7 +104,6 @@ export const SavingsWidget = ({ onSubmit }) => {
       </div>
     </Modal>
   );
-
   const renderSavingsEstimate = () => {
     if (isCalculating) {
       return (
@@ -130,7 +114,6 @@ export const SavingsWidget = ({ onSubmit }) => {
         </>
       );
     }
-
     if (!isFormValid) {
       return (
         <>
@@ -140,7 +123,6 @@ export const SavingsWidget = ({ onSubmit }) => {
         </>
       );
     }
-
     return (
       <>
         <span className="enter-info-label">
@@ -170,7 +152,6 @@ export const SavingsWidget = ({ onSubmit }) => {
       </>
     );
   };
-
   return (
     <div className="widget">
       {isModalShown && renderModal()}
@@ -178,7 +159,6 @@ export const SavingsWidget = ({ onSubmit }) => {
         <span className="title">Refinance.com Quick-Quote</span>
         <span className="subtitle">*Average monthly savings in less than 1 minute</span>
       </div>
-
       <form className="form-page" onSubmit={handleSubmit(onSubmitForm)}>
         <div className="section-form">
           <div className="form-page__row widget__interest-monthly-row">
@@ -216,7 +196,6 @@ export const SavingsWidget = ({ onSubmit }) => {
               />
             </CellForm>
           </div>
-
           <div className="form-page__row widget__interest-monthly-row">
             {/* <CellForm
               id="interest_rate"
@@ -249,7 +228,6 @@ export const SavingsWidget = ({ onSubmit }) => {
                 hideError
               />
             </CellForm>
-
             <CellForm
               id="monthly_payment"
               label="Current Payment/mo."
@@ -266,7 +244,6 @@ export const SavingsWidget = ({ onSubmit }) => {
               />
             </CellForm>
           </div>
-
           <div className="slider-form">
             <div className="slider-form__info">
               <span className="name">CASH OUT AMOUNT</span>
@@ -275,7 +252,6 @@ export const SavingsWidget = ({ onSubmit }) => {
                 {formatMoney(watch('cashout_amount'))}
               </span>
             </div>
-
             <Slider
               min={0}
               max={300000}
