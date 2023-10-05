@@ -6,17 +6,17 @@
     "amortize": "^1.1.0",
     "babel-plugin-import": "1.13.0",
     "customize-cra": "0.9.1",
-    "node-sass": "4.13.1",
+    "node-sass": "^6.0.1",
     "react": "16.13.1",
-    "react-app-rewired": "2.1.5",
+    "react-app-rewired": "^1.6.2",
     "react-dom": "16.13.1",
     "react-hook-form": "5.2.0",
     "react-imask": "6.0.3",
     "react-rangeslider": "2.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "^1.1.5",
     "react-select": "3.1.0",
     "react-tooltip-lite": "1.11.2",
-    "sass-loader": "8.0.2",
+    "sass-loader": "^12.1.0",
     "yup": "0.28.3"
   },
   "scripts": {
@@ -43,7 +43,7 @@
     ]
   },
   "devDependencies": {
-    "eslint": "6.8.0",
+    "eslint": "^6.8.0",
     "eslint-config-airbnb": "18.1.0",
     "eslint-plugin-import": "2.20.2",
     "eslint-plugin-jsx-a11y": "6.2.3",

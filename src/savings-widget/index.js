@@ -107,24 +107,24 @@ export const SavingsWidget = ({ onSubmit }) => {
   const renderSavingsEstimate = () => {
     if (isCalculating) {
       return (
-        <>
+        <div>
           <span className="enter-info-label">Calculating your savings</span>
           <Loader />
           <span className="new-mo-payment">New Mo. Payment: $--- (---%)</span>
-        </>
+        </div>
       );
     }
     if (!isFormValid) {
       return (
-        <>
+        <div>
           <span className="enter-info-label">Calculating your savings</span>
           <span className="each-month-label">Check your inputs!</span>
           <span className="new-mo-payment">New Mo. Payment: $--- (---%)</span>
-        </>
+        </div>
       );
     }
     return (
-      <>
+      <div>
         <span className="enter-info-label">
           With a refinance, we could help you save:
         </span>
@@ -149,7 +149,7 @@ export const SavingsWidget = ({ onSubmit }) => {
           {/* New Mortgage Balance:{' '}{formatMoney(savingsInfo.newMortgageBalance)} */}
         </span>
         <span className="how-calculated" onClick={() => setIsModalShown(true)}>How is this calculated?</span>
-      </>
+      </div>
     );
   };
   return (
